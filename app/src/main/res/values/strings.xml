@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">MGallery</string>
+    <string name="title_New">New</string>
+    <string name="title_popular">Popular</string>
+    <string name="error_title">Oh shucks!</string>
+    <string name="error_description">Slow or no internet connection.\nPlease check your internet settings</string>
+</resources>

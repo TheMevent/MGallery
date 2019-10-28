@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_New">
+
+    <fragment
+        android:id="@+id/navigation_New"
+        android:name="com.mevent.mgallery.ui.new.NewFragment"
+        android:label="@string/title_New"
+        tools:layout="@layout/fragment_new" />
+
+    <fragment
+        android:id="@+id/navigation_Popular"
+        android:name="com.mevent.mgallery.ui.popular.PopularFragment"
+        android:label="@string/title_popular"
+        tools:layout="@layout/fragment_popular" />
+
+</navigation>
