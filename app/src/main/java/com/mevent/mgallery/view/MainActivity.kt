@@ -1,20 +1,34 @@
 package com.mevent.mgallery.view
 
 import android.os.Bundle
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
-import androidx.recyclerview.widget.GridLayoutManager
-import com.mevent.mgallery.models.Data
-import com.mevent.mgallery.models.Image
-import com.mevent.mgallery.utils.Constants
-import com.mevent.mgallery.viewModels.ImagesViewModel
-import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.single_image_layout.view.*
+import androidx.navigation.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.mevent.mgallery.R
 
-class MainActivity : AppCompatActivity(), Callback.onBindviewHolderCallback {
+class MainActivity : AppCompatActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+        val navView: BottomNavigationView = findViewById(R.id.nav_view)
+
+        val navController = findNavController(R.id.nav_host_fragment)
+        // Passing each menu ID as a set of Ids because each
+        // menu should be considered as top level destinations.
+        val appBarConfiguration = AppBarConfiguration(
+            setOf(
+                R.id.navigation_New, R.id.navigation_Popular
+            )
+        )
+        setupActionBarWithNavController(navController, appBarConfiguration)
+        navView.setupWithNavController(navController)
+    }
+
+}
+/*class MainActivity : AppCompatActivity(), Callback.onBindviewHolderCallback {
 
     private var mutableImageList: MutableList<Data> = mutableListOf()
 
@@ -43,8 +57,8 @@ class MainActivity : AppCompatActivity(), Callback.onBindviewHolderCallback {
         setContentView(com.mevent.mgallery.R.layout.activity_main)
 
         viewModel.getAllImages().observe(this, Observer {
-
-            if (it != null && it.isNotEmpty()) {
+*/
+          /*  if (it != null && it.isNotEmpty()) {
 
                 parentShimmerLayout.visibility = View.GONE
                 parentShimmerLayout.stopShimmerAnimation()
@@ -172,3 +186,4 @@ class MainActivity : AppCompatActivity(), Callback.onBindviewHolderCallback {
        }
     }
 }
+*/

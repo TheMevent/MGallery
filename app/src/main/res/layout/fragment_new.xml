@@ -9,25 +9,9 @@
     tools:layout_editor_absoluteX="205dp"
     tools:layout_editor_absoluteY="284dp">
 
-    <TextView
-        android:id="@+id/homeTextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="New"
-        android:paddingEnd="20dp"
-        android:textStyle="bold"
-        android:fontFamily="@font/product_sans_bold"
-        android:textColor="#000000"
-        android:textSize="34dp"
-        android:layout_marginStart="10sp"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="0dp"
-        />
-
     <com.facebook.shimmer.ShimmerFrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/homeTextView"
         android:id="@+id/parentShimmerLayout"
         app:duration="500">
 
@@ -47,7 +31,6 @@
     </com.facebook.shimmer.ShimmerFrameLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:layout_below="@id/homeTextView"
         android:layout_width="match_parent"
         android:id="@+id/recyclerView"
         android:clipToPadding="false"

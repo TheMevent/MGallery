@@ -42,16 +42,6 @@ class ImageRecyclerAdapter(val onBindviewHolderCallback: Callback.onBindviewHold
         notifyDataSetChanged()
     }
 
-
-    fun showNewImages(list: List<Data>) {
-        imageList = list.filter{it.new}
-        notifyDataSetChanged()
-    }
-    fun showPopularImages(list: List<Data>) {
-        imageList = list.filter{it.popular}
-        notifyDataSetChanged()
-    }
-
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
 
