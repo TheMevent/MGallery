@@ -1,5 +1,6 @@
 package com.mevent.mgallery.ui.popular
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.mevent.mgallery.R
 import com.mevent.mgallery.models.Data
 import com.mevent.mgallery.models.Image
+import com.mevent.mgallery.ui.profile.ProfileActivity
 import com.mevent.mgallery.utils.Constants
 import com.mevent.mgallery.view.Callback
 import com.mevent.mgallery.view.ImageRecyclerAdapter
@@ -28,8 +30,6 @@ class PopularFragment : Fragment(), Callback.onBindviewHolderCallback {
     private val viewModel by lazy {
         ViewModelProviders.of(this).get(PopularViewModel::class.java)
     }
-
-    var clickPosition: Int? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -135,34 +135,19 @@ class PopularFragment : Fragment(), Callback.onBindviewHolderCallback {
             p0.itemView.imageView.visibility = View.VISIBLE
             Picasso.get().load(Constants.BASE_URL + "/media/" + image.image.contentUrl).resize(450, 300).centerCrop()
                 .into(p0.itemView.imageView)
-            /*p0.itemView.author.text = "112"
-            p0.itemView.download_url.text = "Image Url  :  ${Constants.BASE_URL + "/media/" + image.image?.contentUrl}"
-            p0.itemView.url.text = "Website  :  ${image.image?.contentUrl}"*/
             p0.itemView.detailsCardView.visibility = View.GONE
-            p0.itemView.triangle_marker.visibility = View.GONE
-
 
         } else {
             p0.itemView.detailsCardView.visibility = View.GONE
-            p0.itemView.triangle_marker.visibility = View.GONE
-
-            clickPosition?.let {
-                if ((it + 2) % 3 == 0) {
-                    p0.itemView.triangle_marker.translationX = -250F
-
-
-                } else if ((it + 1) % 3 == 0) {
-                    p0.itemView.triangle_marker.translationX = 250F
-
-
-                }
-            }
-
-            p0.itemView.author.text = ""
-            p0.itemView.download_url.text = Constants.BASE_URL + "/media/" + image.image.contentUrl
-            p0.itemView.url.text = Constants.BASE_URL + "/media/" + image.image.contentUrl
             p0.itemView.imageView.visibility = View.GONE
+        }
 
+        p0.itemView.setOnClickListener {
+            val intent = Intent(this.context, ProfileActivity::class.java)
+            intent.putExtra("loadURL", Constants.BASE_URL + "/media/" + image.image.contentUrl)
+            intent.putExtra("imageName", image.name)
+            intent.putExtra("imageDescription", image.description)
+            startActivity(intent)
         }
     }
 }

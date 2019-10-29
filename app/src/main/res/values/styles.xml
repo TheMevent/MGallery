@@ -1,9 +1,33 @@
 <resources>
 
-    <!-- Base application theme. -->
-     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!--Customize your theme here.-->
-        <item name="colorPrimary">@color/colorPrimary</item>
+    <style name="AppTheme" parent="@style/Theme.AppCompat.Light.DarkActionBar">
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="android:actionBarStyle">@style/Widget.Styled.ActionBar</item>
+        <item name="actionBarTheme">@style/AppTheme.ActionBarTheme</item>
+        <item name="actionBarStyle">@style/Widget.Styled.ActionBar</item>
     </style>
+
+    <style name="Widget.Styled.ActionBar" parent="@style/Widget.AppCompat.Light.ActionBar">
+        <item name="titleTextStyle">@style/ActionBarTitleText</item>
+        <item name="android:background">@color/white</item>
+        <item name="background">@color/white</item>
+        <item name="subtitleTextStyle">@style/ActionBarSubTitleText</item>
+        <item name="colorControlNormal">@color/black</item>
+    </style>
+
+    <style name="AppTheme.ActionBarTheme" parent="@style/ThemeOverlay.AppCompat.ActionBar">
+        <item name="colorControlNormal">@color/titleColor</item>
+    </style>
+
+    <style name="ActionBarTitleText" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textColor">@color/titleColor</item>
+        <item name="android:textSize">30sp</item>
+    </style>
+
+    <style name="ActionBarSubTitleText" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Subtitle">
+        <item name="android:textColor">@color/titleColor</item>
+        <item name="android:textSize">30sp</item>
+    </style>
+
 </resources>

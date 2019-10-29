@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MGallery</string>
+    <string name="app_name"></string>
     <string name="title_New">New</string>
     <string name="title_popular">Popular</string>
     <string name="error_title">Oh shucks!</string>
