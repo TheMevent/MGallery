@@ -10,12 +10,12 @@
         android:id="@+id/navigation_New"
         android:name="com.mevent.mgallery.ui.new.NewFragment"
         android:label="@string/title_New"
-        tools:layout="@layout/fragment_new" />
+        tools:layout="@layout/recycler_layout" />
 
     <fragment
         android:id="@+id/navigation_Popular"
         android:name="com.mevent.mgallery.ui.popular.PopularFragment"
         android:label="@string/title_popular"
-        tools:layout="@layout/fragment_popular" />
+        tools:layout="@layout/recycler_layout" />
 
 </navigation>

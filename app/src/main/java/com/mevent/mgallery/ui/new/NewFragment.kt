@@ -1,6 +1,5 @@
 package com.mevent.mgallery.ui.new
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,14 +11,13 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.mevent.mgallery.R
 import com.mevent.mgallery.models.Data
 import com.mevent.mgallery.models.Image
-import com.mevent.mgallery.ui.profile.ProfileActivity
 import com.mevent.mgallery.utils.Constants
 import com.mevent.mgallery.view.Callback
 import com.mevent.mgallery.view.ImageRecyclerAdapter
 import com.mevent.mgallery.view.ItemOffsetDecoration
 import com.mevent.mgallery.view.ViewModel
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.fragment_new.*
+import kotlinx.android.synthetic.main.recycler_layout.*
 import kotlinx.android.synthetic.main.single_image_layout.view.*
 
 class NewFragment : Fragment(), Callback.onBindviewHolderCallback {
@@ -37,7 +35,7 @@ class NewFragment : Fragment(), Callback.onBindviewHolderCallback {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val root = inflater.inflate(R.layout.fragment_new, container, false)
+        val root = inflater.inflate(R.layout.recycler_layout, container, false)
 
         viewModel.getAllImages().observe(this, Observer {
 
@@ -52,7 +50,6 @@ class NewFragment : Fragment(), Callback.onBindviewHolderCallback {
                 }
 
                 //Adding a dummy ImageResponseModel with visibility false at every 3rd position
-
                 var count = 0
 
                 it.forEach { Data ->
@@ -143,14 +140,6 @@ class NewFragment : Fragment(), Callback.onBindviewHolderCallback {
         } else {
             p0.itemView.detailsCardView.visibility = View.GONE
             p0.itemView.imageView.visibility = View.GONE
-        }
-
-        p0.itemView.setOnClickListener {
-            val intent = Intent(this.context, ProfileActivity::class.java)
-            intent.putExtra("loadURL", Constants.BASE_URL + "/media/" + image.image.contentUrl)
-            intent.putExtra("imageName", image.name)
-            intent.putExtra("imageDescription", image.description)
-            startActivity(intent)
         }
     }
 }

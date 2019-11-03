@@ -1,7 +1,6 @@
 package com.mevent.mgallery.ui.popular
 
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,14 +12,13 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.mevent.mgallery.R
 import com.mevent.mgallery.models.Data
 import com.mevent.mgallery.models.Image
-import com.mevent.mgallery.ui.profile.ProfileActivity
 import com.mevent.mgallery.utils.Constants
 import com.mevent.mgallery.view.Callback
 import com.mevent.mgallery.view.ImageRecyclerAdapter
 import com.mevent.mgallery.view.ItemOffsetDecoration
 import com.mevent.mgallery.view.ViewModel
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.fragment_popular.*
+import kotlinx.android.synthetic.main.recycler_layout.*
 import kotlinx.android.synthetic.main.single_image_layout.view.*
 
 
@@ -30,9 +28,6 @@ class PopularFragment : Fragment(), Callback.onBindviewHolderCallback {
 
     private val mAdapter by lazy { ImageRecyclerAdapter(this) }
 
-    /*private val viewModel by lazy {
-        ViewModelProviders.of(this).get(PopularViewModel::class.java)
-    }*/
     private val viewModel by lazy {
         ViewModelProviders.of(this).get(ViewModel::class.java)
     }
@@ -42,60 +37,7 @@ class PopularFragment : Fragment(), Callback.onBindviewHolderCallback {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-/*
-        val root = inflater.inflate(com.mevent.mgallery.R.layout.fragment_popular, container, false)
-
-        viewModel.getAllImages().observe(this, Observer {
-
-            if (it != null && it.isNotEmpty()) {
-
-                animation_view.visibility = View.GONE
-                animation_view.cancelAnimation()
-
-                (recyclerView.layoutParams as ViewGroup.MarginLayoutParams).let { its ->
-                    its.topMargin = 0
-                    recyclerView.layoutParams = its
-                }
-
-                //Adding a dummy ImageResponseModel with visibility false at every 3rd position
-
-                var count = 0
-
-                it.forEach { Data ->
-                    if (count % 3 == 0) {
-                        mutableImageList.add(
-                            Data(
-                                0,
-                                "",
-                                "",
-                                false,
-                                false,
-                                Image(
-                                    0,
-                                    ""
-                                )
-                            )
-                        )
-                        mutableImageList.add(Data)
-                        count++
-                    } else {
-                        mutableImageList.add(Data)
-                    }
-                    count++
-                }
-
-                mutableImageList.add(Data(0, "", "", false,false, Image(0, "")))
-
-            } else {
-                mutableImageList = arrayListOf()
-                inflater.inflate(com.mevent.mgallery.R.layout.error_layout, container, false)
-            }
-
-            mAdapter.showAllImages(mutableImageList)
-
-        })
-*/
-        val root = inflater.inflate(R.layout.fragment_popular, container, false)
+        val root = inflater.inflate(R.layout.recycler_layout, container, false)
         try {
             viewModel.getAllImages().observe(this, Observer {
 
@@ -110,7 +52,6 @@ class PopularFragment : Fragment(), Callback.onBindviewHolderCallback {
                     }
 
                     //Adding a dummy ImageResponseModel with visibility false at every 3rd position
-
                     var count = 0
 
                     it.forEach { Data ->
@@ -205,14 +146,6 @@ class PopularFragment : Fragment(), Callback.onBindviewHolderCallback {
         } else {
             p0.itemView.detailsCardView.visibility = View.GONE
             p0.itemView.imageView.visibility = View.GONE
-        }
-
-        p0.itemView.setOnClickListener {
-            val intent = Intent(this.context, ProfileActivity::class.java)
-            intent.putExtra("loadURL", Constants.BASE_URL + "/media/" + image.image.contentUrl)
-            intent.putExtra("imageName", image.name)
-            intent.putExtra("imageDescription", image.description)
-            startActivity(intent)
         }
     }
 }
