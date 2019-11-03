@@ -1,5 +1,6 @@
 package com.mevent.mgallery.ui.popular
 
+
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -17,9 +18,11 @@ import com.mevent.mgallery.utils.Constants
 import com.mevent.mgallery.view.Callback
 import com.mevent.mgallery.view.ImageRecyclerAdapter
 import com.mevent.mgallery.view.ItemOffsetDecoration
+import com.mevent.mgallery.view.ViewModel
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_popular.*
 import kotlinx.android.synthetic.main.single_image_layout.view.*
+
 
 class PopularFragment : Fragment(), Callback.onBindviewHolderCallback {
 
@@ -27,8 +30,11 @@ class PopularFragment : Fragment(), Callback.onBindviewHolderCallback {
 
     private val mAdapter by lazy { ImageRecyclerAdapter(this) }
 
-    private val viewModel by lazy {
+    /*private val viewModel by lazy {
         ViewModelProviders.of(this).get(PopularViewModel::class.java)
+    }*/
+    private val viewModel by lazy {
+        ViewModelProviders.of(this).get(ViewModel::class.java)
     }
 
     override fun onCreateView(
@@ -36,14 +42,20 @@ class PopularFragment : Fragment(), Callback.onBindviewHolderCallback {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val root = inflater.inflate(R.layout.fragment_popular, container, false)
+/*
+        val root = inflater.inflate(com.mevent.mgallery.R.layout.fragment_popular, container, false)
 
         viewModel.getAllImages().observe(this, Observer {
 
             if (it != null && it.isNotEmpty()) {
 
-                parentShimmerLayout.visibility = View.GONE
-                parentShimmerLayout.stopShimmerAnimation()
+                animation_view.visibility = View.GONE
+                animation_view.cancelAnimation()
+
+                (recyclerView.layoutParams as ViewGroup.MarginLayoutParams).let { its ->
+                    its.topMargin = 0
+                    recyclerView.layoutParams = its
+                }
 
                 //Adding a dummy ImageResponseModel with visibility false at every 3rd position
 
@@ -74,16 +86,71 @@ class PopularFragment : Fragment(), Callback.onBindviewHolderCallback {
 
                 mutableImageList.add(Data(0, "", "", false,false, Image(0, "")))
 
-
             } else {
                 mutableImageList = arrayListOf()
-                inflater.inflate(R.layout.error_layout, container, false)
+                inflater.inflate(com.mevent.mgallery.R.layout.error_layout, container, false)
             }
 
             mAdapter.showAllImages(mutableImageList)
 
         })
+*/
+        val root = inflater.inflate(R.layout.fragment_popular, container, false)
+        try {
+            viewModel.getAllImages().observe(this, Observer {
 
+                if (it != null && it.isNotEmpty()) {
+
+                    animation_view.visibility = View.GONE
+                    animation_view.cancelAnimation()
+
+                    (recyclerView.layoutParams as ViewGroup.MarginLayoutParams).let { its ->
+                        its.topMargin = 0
+                        recyclerView.layoutParams = its
+                    }
+
+                    //Adding a dummy ImageResponseModel with visibility false at every 3rd position
+
+                    var count = 0
+
+                    it.forEach { Data ->
+                        if (count % 3 == 0) {
+                            mutableImageList.add(
+                                Data(
+                                    0,
+                                    "",
+                                    "",
+                                    false,
+                                    false,
+                                    Image(
+                                        0,
+                                        ""
+                                    )
+                                )
+                            )
+                            mutableImageList.add(Data)
+                            count++
+                        } else {
+                            mutableImageList.add(Data)
+                        }
+                        count++
+                    }
+
+                    mutableImageList.add(Data(0, "", "", false,false, Image(0, "")))
+
+                } else {
+                    mutableImageList = arrayListOf()
+                    inflater.inflate(R.layout.error_layout, container, false)
+                }
+
+                mAdapter.showAllImages(mutableImageList)
+
+            })
+        }
+        finally {
+            mutableImageList = arrayListOf()
+            inflater.inflate(R.layout.error_layout, container, false)
+        }
         return root
     }
 
@@ -93,7 +160,7 @@ class PopularFragment : Fragment(), Callback.onBindviewHolderCallback {
         val gridManager = GridLayoutManager(this.context, 2)
 
         //Setting equal padding for grid layout
-        val itemDecoration = ItemOffsetDecoration(requireContext(), R.dimen.padding5)
+        val itemDecoration = ItemOffsetDecoration(requireContext(), com.mevent.mgallery.R.dimen.padding5)
         recyclerView.addItemDecoration(itemDecoration)
 
         //Setting the column length of every 3rd element to 2
@@ -112,19 +179,17 @@ class PopularFragment : Fragment(), Callback.onBindviewHolderCallback {
         recyclerView.layoutManager = gridManager
         mAdapter.notifyDataSetChanged()
         recyclerView.adapter = mAdapter
-        viewModel.getImagesFromNetwork()
+        viewModel.getImagesFromNetwork("popular")
     }
 
     override fun onResume() {
         super.onResume()
-        parentShimmerLayout.startShimmerAnimation()
-
-
+        animation_view.playAnimation()
     }
 
     override fun onStop() {
         super.onStop()
-        parentShimmerLayout.stopShimmerAnimation()
+        animation_view.cancelAnimation()
     }
 
     override fun onBindViewHolder(p0: ImageRecyclerAdapter.ViewHolder, position: Int) {

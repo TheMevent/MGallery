@@ -16,5 +16,12 @@ class ProfileActivity : AppCompatActivity() {
 
         nameText.text = intent.getStringExtra("imageName")
         description.text = intent.getStringExtra("imageDescription")
+
+        title = ""
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        startActivity(intent)
     }
 }

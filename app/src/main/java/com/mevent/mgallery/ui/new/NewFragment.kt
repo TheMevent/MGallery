@@ -17,6 +17,7 @@ import com.mevent.mgallery.utils.Constants
 import com.mevent.mgallery.view.Callback
 import com.mevent.mgallery.view.ImageRecyclerAdapter
 import com.mevent.mgallery.view.ItemOffsetDecoration
+import com.mevent.mgallery.view.ViewModel
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_new.*
 import kotlinx.android.synthetic.main.single_image_layout.view.*
@@ -28,7 +29,7 @@ class NewFragment : Fragment(), Callback.onBindviewHolderCallback {
     private val mAdapter by lazy { ImageRecyclerAdapter(this) }
 
     private val viewModel by lazy {
-        ViewModelProviders.of(this).get(NewViewModel::class.java)
+        ViewModelProviders.of(this).get(ViewModel::class.java)
     }
 
     override fun onCreateView(
@@ -42,8 +43,13 @@ class NewFragment : Fragment(), Callback.onBindviewHolderCallback {
 
             if (it != null && it.isNotEmpty()) {
 
-                parentShimmerLayout.visibility = View.GONE
-                parentShimmerLayout.stopShimmerAnimation()
+                animation_view.visibility = View.GONE
+                animation_view.cancelAnimation()
+
+                (recyclerView.layoutParams as ViewGroup.MarginLayoutParams).let { its ->
+                    its.topMargin = 0
+                    recyclerView.layoutParams = its
+                }
 
                 //Adding a dummy ImageResponseModel with visibility false at every 3rd position
 
@@ -74,7 +80,6 @@ class NewFragment : Fragment(), Callback.onBindviewHolderCallback {
 
                 mutableImageList.add(Data(0, "", "", false,false, Image(0, "")))
 
-
             } else {
                 mutableImageList = arrayListOf()
                 inflater.inflate(R.layout.error_layout, container, false)
@@ -93,7 +98,7 @@ class NewFragment : Fragment(), Callback.onBindviewHolderCallback {
         val gridManager = GridLayoutManager(this.context, 2)
 
         //Setting equal padding for grid layout
-        val itemDecoration = ItemOffsetDecoration(requireContext(), R.dimen.padding5)
+        val itemDecoration = ItemOffsetDecoration(requireContext(), com.mevent.mgallery.R.dimen.padding5)
         recyclerView.addItemDecoration(itemDecoration)
 
         //Setting the column length of every 3rd element to 2
@@ -112,19 +117,17 @@ class NewFragment : Fragment(), Callback.onBindviewHolderCallback {
         recyclerView.layoutManager = gridManager
         mAdapter.notifyDataSetChanged()
         recyclerView.adapter = mAdapter
-        viewModel.getImagesFromNetwork()
+        viewModel.getImagesFromNetwork("new")
     }
 
     override fun onResume() {
         super.onResume()
-        parentShimmerLayout.startShimmerAnimation()
-
-
+        animation_view.playAnimation()
     }
 
     override fun onStop() {
         super.onStop()
-        parentShimmerLayout.stopShimmerAnimation()
+        animation_view.cancelAnimation()
     }
 
     override fun onBindViewHolder(p0: ImageRecyclerAdapter.ViewHolder, position: Int) {

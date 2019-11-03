@@ -1,4 +1,4 @@
-package com.mevent.mgallery.ui.popular
+package com.mevent.mgallery.view
 
 import android.util.Log
 import androidx.lifecycle.LiveData
@@ -11,7 +11,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class PopularViewModel : ViewModel() {
+class ViewModel : ViewModel() {
 
     private val imagesRepository = ImagesRepository.getInstance()
 
@@ -22,7 +22,7 @@ class PopularViewModel : ViewModel() {
         return getAllImages
     }
 
-    fun getImagesFromNetwork() = imagesRepository.getApiResponse().enqueue(object:
+    fun getImagesFromNetwork(tag: String) = imagesRepository.getApiResponse().enqueue(object:
         Callback<ResponseMode> {
         override fun onFailure(call: Call<ResponseMode>, t: Throwable) {
             Log.i("Images" , t.localizedMessage)
@@ -33,7 +33,7 @@ class PopularViewModel : ViewModel() {
         ) {
             if (response.isSuccessful)
             {
-                getAllImages.postValue(response.body()?.data?.filter { it.popular })
+                getAllImages.postValue(response.body()?.data?.filter { if (tag == "new") it.new else it.popular })
             }
             else
             {
