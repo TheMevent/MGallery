@@ -41,8 +41,10 @@ class NewFragment : Fragment(), Callback.onBindviewHolderCallback {
 
             if (it != null && it.isNotEmpty()) {
 
-                animation_view.visibility = View.GONE
-                animation_view.cancelAnimation()
+                errorView?.visibility = View.GONE
+
+                animation_view?.visibility = View.GONE
+                animation_view?.cancelAnimation()
 
                 (recyclerView.layoutParams as ViewGroup.MarginLayoutParams).let { its ->
                     its.topMargin = 0
@@ -79,7 +81,7 @@ class NewFragment : Fragment(), Callback.onBindviewHolderCallback {
 
             } else {
                 mutableImageList = arrayListOf()
-                inflater.inflate(R.layout.error_layout, container, false)
+                errorView?.visibility = View.VISIBLE
             }
 
             mAdapter.showAllImages(mutableImageList)
@@ -114,7 +116,7 @@ class NewFragment : Fragment(), Callback.onBindviewHolderCallback {
         recyclerView.layoutManager = gridManager
         mAdapter.notifyDataSetChanged()
         recyclerView.adapter = mAdapter
-        viewModel.getImagesFromNetwork("new")
+        viewModel.getImagesFromNetwork("new", this)
     }
 
     override fun onResume() {

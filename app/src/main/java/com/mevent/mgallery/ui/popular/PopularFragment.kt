@@ -38,60 +38,58 @@ class PopularFragment : Fragment(), Callback.onBindviewHolderCallback {
         savedInstanceState: Bundle?
     ): View? {
         val root = inflater.inflate(R.layout.recycler_layout, container, false)
-        try {
-            viewModel.getAllImages().observe(this, Observer {
 
-                if (it != null && it.isNotEmpty()) {
+        viewModel.getAllImages().observe(this, Observer {
 
-                    animation_view.visibility = View.GONE
-                    animation_view.cancelAnimation()
+            if (it != null && it.isNotEmpty()) {
 
-                    (recyclerView.layoutParams as ViewGroup.MarginLayoutParams).let { its ->
-                        its.topMargin = 0
-                        recyclerView.layoutParams = its
-                    }
+                errorView?.visibility = View.GONE
 
-                    //Adding a dummy ImageResponseModel with visibility false at every 3rd position
-                    var count = 0
+                animation_view?.visibility = View.GONE
+                animation_view?.cancelAnimation()
 
-                    it.forEach { Data ->
-                        if (count % 3 == 0) {
-                            mutableImageList.add(
-                                Data(
-                                    0,
-                                    "",
-                                    "",
-                                    false,
-                                    false,
-                                    Image(
-                                        0,
-                                        ""
-                                    )
-                                )
-                            )
-                            mutableImageList.add(Data)
-                            count++
-                        } else {
-                            mutableImageList.add(Data)
-                        }
-                        count++
-                    }
-
-                    mutableImageList.add(Data(0, "", "", false,false, Image(0, "")))
-
-                } else {
-                    mutableImageList = arrayListOf()
-                    inflater.inflate(R.layout.error_layout, container, false)
+                (recyclerView.layoutParams as ViewGroup.MarginLayoutParams).let { its ->
+                    its.topMargin = 0
+                    recyclerView.layoutParams = its
                 }
 
-                mAdapter.showAllImages(mutableImageList)
+                //Adding a dummy ImageResponseModel with visibility false at every 3rd position
+                var count = 0
 
-            })
-        }
-        finally {
-            mutableImageList = arrayListOf()
-            inflater.inflate(R.layout.error_layout, container, false)
-        }
+                it.forEach { Data ->
+                    if (count % 3 == 0) {
+                        mutableImageList.add(
+                            Data(
+                                0,
+                                "",
+                                "",
+                                false,
+                                false,
+                                Image(
+                                    0,
+                                    ""
+                                )
+                            )
+                        )
+                        mutableImageList.add(Data)
+                        count++
+                    } else {
+                        mutableImageList.add(Data)
+                    }
+                    count++
+                }
+
+                mutableImageList.add(Data(0, "", "", false,false, Image(0, "")))
+
+            } else {
+                mutableImageList = arrayListOf()
+                errorView?.visibility = View.VISIBLE
+            }
+
+            mAdapter.showAllImages(mutableImageList)
+
+        })
+
         return root
     }
 
@@ -120,7 +118,7 @@ class PopularFragment : Fragment(), Callback.onBindviewHolderCallback {
         recyclerView.layoutManager = gridManager
         mAdapter.notifyDataSetChanged()
         recyclerView.adapter = mAdapter
-        viewModel.getImagesFromNetwork("popular")
+        viewModel.getImagesFromNetwork("popular", this)
     }
 
     override fun onResume() {
